@@ -1,6 +1,5 @@
 package com.jack.utils.cipher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,8 +11,8 @@ import java.util.List;
  */
 public class CaesarsCipher 
 {
-  private List<Character> alteredAlphabet = createAlphabetList();
-  private List<Character> alphabet = createAlphabetList();
+  private List<Character> alteredAlphabet = CipherUtils.createAlphabetList();
+  private List<Character> alphabet = CipherUtils.createAlphabetList();
   int key = 0;
     
   public String encrypt(String txtToEncrypt)
@@ -62,21 +61,6 @@ public class CaesarsCipher
       }
     }
     return decryptedText;
-  }
-  
-  private static List<Character> createAlphabetList()
-  {
-    return charArrToList("abcdefghijklmnopqrstuvwxyz".toCharArray());
-  }
-  
-  private static List<Character> charArrToList(char[] chars)
-  {
-    List<Character> list = new ArrayList<Character>();
-    for (char c : chars)
-    {
-      list.add(c);
-    }
-    return list;
   }
   
   public int getKey()

@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class SubtitutionCipher 
 {
-  private List<Character> alteredAlphabet = createAlphabetList();
-  private List<Character> alphabet = createAlphabetList();
+  private List<Character> alteredAlphabet = CipherUtils.createAlphabetList();
+  private List<Character> alphabet = CipherUtils.createAlphabetList();
   private List<Character> key = new ArrayList<Character>();
     
   public String encrypt(String txtToEncrypt)
@@ -87,21 +87,6 @@ public class SubtitutionCipher
     }
   }
   
-  private static List<Character> createAlphabetList()
-  {
-    return charArrToList("abcdefghijklmnopqrstuvwxyz".toCharArray());
-  }
-  
-  private static List<Character> charArrToList(char[] chars)
-  {
-    List<Character> list = new ArrayList<Character>();
-    for (char c : chars)
-    {
-      list.add(c);
-    }
-    return list;
-  }
-  
   public String getKey()
   {
     return key.toString();
@@ -110,6 +95,6 @@ public class SubtitutionCipher
   public void setKey(String key)
   {
     checkKey(key);
-    this.key = charArrToList(key.toCharArray());
+    this.key = CipherUtils.charArrToList(key.toCharArray());
   }
 }
