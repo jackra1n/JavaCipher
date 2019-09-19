@@ -10,7 +10,7 @@ import java.util.List;
  * @author Jacek Lajdecki
  * 
  */
-public class MonoalphabeticCipher 
+public class SubtitutionCipher 
 {
   private List<Character> alteredAlphabet = createAlphabetList();
   private List<Character> alphabet = createAlphabetList();
@@ -41,9 +41,20 @@ public class MonoalphabeticCipher
   
   public String decrypt(String encryptedText)
   {
-    
-    
-    return encryptedText;
+    String decryptedText = "";
+    for (Character character : encryptedText.toLowerCase().toCharArray())
+    {
+      int index = alteredAlphabet.indexOf(character);
+      if (index == -1)
+      {
+        decryptedText += " ";
+      }
+      else 
+      {
+        decryptedText += alphabet.get(index);
+      }
+    }
+    return decryptedText;
   }
   
   private void checkKey()

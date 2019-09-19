@@ -42,9 +42,26 @@ public class CaesarsCipher
   
   public String decrypt(String encryptedText)
   {
-    
-    
-    return encryptedText;
+    String decryptedText = "";    
+    for (Character character : encryptedText.toLowerCase().toCharArray())
+    {
+      int index = alphabet.indexOf(character);
+      if (index == -1)
+      {
+        decryptedText += " ";
+      }
+      else if (index-key < 0)
+      {
+        index = alphabet.size()-(key-index);
+        decryptedText += alteredAlphabet.get(index);
+      }
+      else 
+      {
+        index -= key;
+        decryptedText += alteredAlphabet.get(index);
+      }
+    }
+    return decryptedText;
   }
   
   private static List<Character> createAlphabetList()
