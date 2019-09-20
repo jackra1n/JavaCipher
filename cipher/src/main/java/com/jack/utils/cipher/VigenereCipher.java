@@ -1,7 +1,6 @@
 package com.jack.utils.cipher;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class VigenereCipher
@@ -13,10 +12,7 @@ public class VigenereCipher
   public String encrypt(String textToEncrypt)
   {
     String encryptedText = "";
-    System.out.println(alphabet);
-    System.out.println(alteredAlphabet);
-    Collections.sort(alteredAlphabet);
-    System.out.println(alteredAlphabet);
+    int keyPlace = 0;
     for (Character character : textToEncrypt.toLowerCase().toCharArray())
     {
       int charIndex = alphabet.indexOf(character);
@@ -50,32 +46,14 @@ public class VigenereCipher
     return decryptedText;
   }
   
-  private List<Character> makeAlteredAlphabet()
+  private Character encryptChar(char stringChar,char keyChar)
   {
     CipherUtils.checkKey(this.key);
-    List<Character> listWithKey = new ArrayList<Character>();
-    int keyPlace = 0;
-    for (Character character : alphabet)
-    {
-      int index = 0;
-      if (keyPlace >= key.size())
-      {
-        keyPlace = 0;
-      }
-      int keyIndex = alphabet.indexOf(key.get(keyPlace));
-      int alphabetIndex = alphabet.indexOf(character);
-      if (alphabetIndex + keyIndex >= alphabet.size())
-      {
-        index = alphabetIndex - alphabet.size() + keyIndex;
-      }
-      else 
-      {
-        index = alphabetIndex + keyIndex;
-      }
-      keyPlace++;
-      listWithKey.add(alphabet.get(index));
-    }
-    return listWithKey;
+    List<Character> listWithKey = CipherUtils.createAlphabetList();
+    listWithKey.remove(keyChar);
+    listWithKey.add(0, keyChar);
+    int index = alphabet.indexOf(stringChar);
+    return listWithKey.get(index);
   }
   
   public List<Character> getKey()
