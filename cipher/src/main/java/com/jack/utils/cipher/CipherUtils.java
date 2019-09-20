@@ -19,4 +19,38 @@ public class CipherUtils
     }
     return list;
   }
+  
+  static void checkKey(List<Character> key)
+  {
+    if (key == null)
+    {
+      throw new IllegalArgumentException("Cipher key is not set");
+    }
+    StringBuilder sb = new StringBuilder();
+    for (Character c : key)
+    {
+      sb.append(c);
+    }
+    checkKey(sb.toString());
+  }
+  
+  static void checkKey(String keyString)
+  {
+    if (keyString == null)
+    {
+      throw new IllegalArgumentException("Cipher key is not set");
+    }
+    List<Character> newList = new ArrayList<Character>();
+    for (char c : keyString.toCharArray())
+    {
+      if (!newList.contains(c))
+      {
+        newList.add(c);
+      }
+      else 
+      {
+        throw new IllegalArgumentException("Key is not supposed to have duplicate characters. Your key is: "+keyString);
+      }
+    }
+  }
 }

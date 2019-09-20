@@ -10,7 +10,7 @@ import java.util.List;
  * @author Jacek Lajdecki
  * 
  */
-public class SubtitutionCipher 
+public class SubstitutionCipher 
 {
   private List<Character> alteredAlphabet = CipherUtils.createAlphabetList();
   private List<Character> alphabet = CipherUtils.createAlphabetList();
@@ -18,7 +18,7 @@ public class SubtitutionCipher
     
   public String encrypt(String txtToEncrypt)
   {
-    checkKey();
+    CipherUtils.checkKey(key);
     
     alteredAlphabet.removeAll(key);
     alteredAlphabet.addAll(0, key);
@@ -57,36 +57,6 @@ public class SubtitutionCipher
     return decryptedText;
   }
   
-  private void checkKey()
-  {
-    StringBuilder sb = new StringBuilder();
-    for (Character c : key)
-    {
-      sb.append(c);
-    }
-    checkKey(sb.toString());
-  }
-  
-  private void checkKey(String keyString)
-  {
-    if (keyString == null)
-    {
-      throw new IllegalArgumentException("Cipher key is not set");
-    }
-    List<Character> newList = new ArrayList<Character>();
-    for (char c : keyString.toCharArray())
-    {
-      if (!newList.contains(c))
-      {
-        newList.add(c);
-      }
-      else 
-      {
-        throw new IllegalArgumentException("Key is not supposed to have duplicate characters. Your key is: "+keyString);
-      }
-    }
-  }
-  
   public String getKey()
   {
     return key.toString();
@@ -94,7 +64,7 @@ public class SubtitutionCipher
   
   public void setKey(String key)
   {
-    checkKey(key);
+    CipherUtils.checkKey(key);
     this.key = CipherUtils.charArrToList(key.toCharArray());
   }
 }
