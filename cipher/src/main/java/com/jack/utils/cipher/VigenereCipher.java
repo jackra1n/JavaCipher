@@ -16,14 +16,18 @@ public class VigenereCipher
     for (Character character : textToEncrypt.toLowerCase().toCharArray())
     {
       int charIndex = alphabet.indexOf(character);
-      if (charIndex == -1)
-      {
-        encryptedText += " ";
-      }
-      else 
-      {
-        encryptedText += alteredAlphabet.get(charIndex);
-      }
+//      for (int i = 0; i < array.length; i++)
+//      {
+//        
+//      }
+//      if (charIndex == -1)
+//      {
+//        encryptedText += " ";
+//      }
+//      else 
+//      {
+//        encryptedText += alteredAlphabet.get(charIndex);
+//      }
     }
     return encryptedText;
   }
@@ -64,6 +68,6 @@ public class VigenereCipher
   public void setKey(String key)
   {
     this.key = CipherUtils.charArrToList(key.toLowerCase().toCharArray());
-    alteredAlphabet = makeAlteredAlphabet();
+//    alteredAlphabet = makeAlteredAlphabet();
   }
 }
