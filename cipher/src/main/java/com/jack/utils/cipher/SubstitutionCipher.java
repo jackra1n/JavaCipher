@@ -3,68 +3,66 @@ package com.jack.utils.cipher;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
- * This is a method that allows you to encrypt 
- * your String using Monoalphabetic Cipher.
+ * This is a class that allows you encrypt 
+ * your String using Alphabetic Cipher.
  * 
  * @author Jacek Lajdecki
  * 
  */
 public class SubstitutionCipher 
 {
-  private List<Character> alteredAlphabet = CipherUtils.createAlphabetList();
-  private List<Character> alphabet = CipherUtils.createAlphabetList();
+  private List<Character> alteredAlphabet = CipherUtils.alphabetList();
+  private List<Character> alphabet = CipherUtils.alphabetList();
   private List<Character> key = new ArrayList<Character>();
     
+  /*
+   * Encrypts desired text with your key using Alphabetical Substitution
+   */
   public String encrypt(String txtToEncrypt)
   {
-    CipherUtils.checkKey(key);
-    
-    alteredAlphabet.removeAll(key);
-    alteredAlphabet.addAll(0, key);
-    
     String encryptedText = "";    
     for (Character character : txtToEncrypt.toLowerCase().toCharArray())
     {
-      int index = alphabet.indexOf(character);
-      if (index == -1)
-      {
-        encryptedText += " ";
-      }
-      else 
-      {
-        encryptedText += alteredAlphabet.get(index);
-      }
+      encryptedText += Character.isWhitespace(character) ? StringUtils.SPACE 
+              : alteredAlphabet.get(alphabet.indexOf(character));
     }
     return encryptedText;
   }
-  
+
+  /*
+   * Decrypts desired text with your key using Alphabetical Substitution
+   */
   public String decrypt(String encryptedText)
   {
     String decryptedText = "";
     for (Character character : encryptedText.toLowerCase().toCharArray())
     {
       int index = alteredAlphabet.indexOf(character);
-      if (index == -1)
-      {
-        decryptedText += " ";
-      }
-      else 
-      {
-        decryptedText += alphabet.get(index);
-      }
+      decryptedText += Character.isWhitespace(character) ? StringUtils.SPACE
+              : alphabet.get(index); 
     }
     return decryptedText;
   }
   
+  /*
+   * Return your key
+   */
   public String getKey()
   {
     return key.toString();
   }
   
+  /*
+   * Sets key of your substitution
+   */
   public void setKey(String key)
   {
     CipherUtils.checkKey(key);
-    this.key = CipherUtils.charArrToList(key.toCharArray());
+    this.key = CipherUtils.charArrayToList(key.toCharArray());
+    alteredAlphabet.removeAll(this.key);
+    alteredAlphabet.addAll(0, this.key);
   }
 }

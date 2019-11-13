@@ -3,31 +3,42 @@ package com.jack.utils.cipher;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+/**
+ * This is a class that allows you encrypt
+ * your String using Vigener Cipher.
+ * 
+ * @author Jacek Lajdecki
+ * 
+ */
 public class VigenereCipher
 {
-  List<Character> alphabet = CipherUtils.createAlphabetList();
-  List<Character> alteredAlphabet = new ArrayList<Character>();
+  List<Character> alphabet = CipherUtils.alphabetList();
   List<Character> key = new ArrayList<Character>();
 
   public String encrypt(String textToEncrypt)
   {
-    String encryptedText = "";
     int keyPlace = 0;
+    String encryptedText = "";
     for (Character character : textToEncrypt.toLowerCase().toCharArray())
     {
       int charIndex = alphabet.indexOf(character);
-//      for (int i = 0; i < array.length; i++)
-//      {
-//        
-//      }
-//      if (charIndex == -1)
-//      {
-//        encryptedText += " ";
-//      }
-//      else 
-//      {
-//        encryptedText += alteredAlphabet.get(charIndex);
-//      }
+      int keyIndex = alphabet.indexOf(key.get(keyPlace));
+      if (Character.isWhitespace(character))
+      {
+        encryptedText += StringUtils.SPACE;
+      }
+      else if (charIndex+keyIndex >= alphabet.size())
+      {
+        encryptedText += alphabet.get(charIndex-alphabet.size()+keyIndex);
+        keyPlace = nextKeyChar(keyPlace); 
+      }
+      else 
+      {
+        encryptedText += alphabet.get(charIndex+keyIndex);        
+        keyPlace = nextKeyChar(keyPlace); 
+      }
     }
     return encryptedText;
   }
@@ -35,29 +46,40 @@ public class VigenereCipher
   public String decrypt(String encryptedText)
   {
     String decryptedText = "";
+    int keyPlace = 0;
     for (Character character : encryptedText.toLowerCase().toCharArray())
     {
-      int index = alteredAlphabet.indexOf(character);
-      if (index == -1)
+      int charIndex = alphabet.indexOf(character);
+      int keyIndex = alphabet.indexOf(key.get(keyPlace));
+      if (Character.isWhitespace(character))
       {
-        decryptedText += " ";
+        decryptedText += StringUtils.SPACE;
+      }
+      else if (charIndex-keyIndex < 0)
+      {
+        decryptedText += alphabet.get(alphabet.size()+charIndex-keyIndex);
+        keyPlace = nextKeyChar(keyPlace); 
       }
       else 
       {
-        decryptedText += alphabet.get(index);
+        decryptedText += alphabet.get(charIndex-keyIndex);        
+        keyPlace = nextKeyChar(keyPlace); 
       }
     }
     return decryptedText;
   }
   
-  private Character encryptChar(char stringChar,char keyChar)
+  private int nextKeyChar(int keyPlace)
   {
-    CipherUtils.checkKey(this.key);
-    List<Character> listWithKey = CipherUtils.createAlphabetList();
-    listWithKey.remove(keyChar);
-    listWithKey.add(0, keyChar);
-    int index = alphabet.indexOf(stringChar);
-    return listWithKey.get(index);
+    if (keyPlace == key.size()-1)
+    {
+      keyPlace = 0;        
+    }
+    else 
+    {
+      keyPlace += 1;
+    }
+    return keyPlace;
   }
   
   public List<Character> getKey()
@@ -67,7 +89,6 @@ public class VigenereCipher
   
   public void setKey(String key)
   {
-    this.key = CipherUtils.charArrToList(key.toLowerCase().toCharArray());
-//    alteredAlphabet = makeAlteredAlphabet();
+    this.key = CipherUtils.charArrayToList(key.toLowerCase().toCharArray());
   }
 }

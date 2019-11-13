@@ -2,8 +2,10 @@ package com.jack.utils.cipher;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
- * This is a method that allows you to encrypt 
+ * This is a class that allows you encrypt 
  * your String using Caesars Cipher.
  * 
  * @author Jacek Lajdecki
@@ -11,8 +13,7 @@ import java.util.List;
  */
 public class CaesarsCipher 
 {
-  private List<Character> alteredAlphabet = CipherUtils.createAlphabetList();
-  private List<Character> alphabet = CipherUtils.createAlphabetList();
+  private List<Character> alphabet = CipherUtils.alphabetList();
   int key = 0;
   
   /*
@@ -23,21 +24,9 @@ public class CaesarsCipher
     String encryptedText = "";    
     for (Character character : txtToEncrypt.toLowerCase().toCharArray())
     {
-      int index = alphabet.indexOf(character);
-      if (Character.isWhitespace(character))
-      {
-        encryptedText += " ";
-      }
-      else if (index+key >= alphabet.size())
-      {
-        index = index-alphabet.size()+key;
-        encryptedText += alphabet.get(index);
-      }
-      else 
-      {
-        index += key;
-        encryptedText += alphabet.get(index);
-      }
+      int charIndex = alphabet.indexOf(character);
+      encryptedText += (Character.isWhitespace(character)) ? StringUtils.SPACE
+              : (CipherUtils.getRightIndexEncrypting(charIndex, key));
     }
     return encryptedText;
   }
@@ -50,21 +39,9 @@ public class CaesarsCipher
     String decryptedText = "";    
     for (Character character : encryptedText.toLowerCase().toCharArray())
     {
-      int index = alphabet.indexOf(character);
-      if (Character.isWhitespace(character))
-      {
-        decryptedText += " ";
-      }
-      else if (index-key < 0)
-      {
-        index = alphabet.size()-(key-index);
-        decryptedText += alphabet.get(index);
-      }
-      else 
-      {
-        index -= key;
-        decryptedText += alphabet.get(index);
-      }
+      int charIndex = alphabet.indexOf(character);
+      decryptedText += (Character.isWhitespace(character)) ? StringUtils.SPACE
+              : (CipherUtils.getRightIndexDecrypting(charIndex, key));
     }
     return decryptedText;
   }
